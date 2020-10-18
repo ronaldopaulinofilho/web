@@ -16,7 +16,7 @@ export default {
         const {id} = request.params;
         const orphanagesRepository = getRepository(Orphanage);
         const orphanage = await orphanagesRepository.findOneOrFail(id, {relations:['images']});
-        return response.json(orphanageView.render);
+        return response.json(orphanageView.render(orphanage));
     },
     async create(request: Request, response: Response){
         const {
@@ -35,13 +35,13 @@ export default {
                return{ path: image.filename}
            });
            const data={
-               name, 
+            name, 
             latitude,
             longitude,
             about, 
             instructions,
             opening_hours,
-            open_on_weekends,
+            open_on_weekends: open_on_weekends === 'true',
             images
                
 
